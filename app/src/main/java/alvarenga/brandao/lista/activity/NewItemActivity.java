@@ -75,7 +75,7 @@ public class NewItemActivity extends AppCompatActivity {
         if (resultCode != Activity.RESULT_OK) return;
 
         photoSelected = data.getData();
-        ImageView imvPhotoPreview = findViewById(R.id.imvPhoto);
+        ImageView imvPhotoPreview = findViewById(R.id.imvfotoPreview);
         imvPhotoPreview.setImageURI(photoSelected);
     }
 }
