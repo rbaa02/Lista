@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         myItem.photo = data.getData();
         // Adiciona o item NOVO na lista de itens
         itens.add(myItem);
-        // Noticica o adapter para mostrar o novo item
+        // Notifica o adapter para mostrar o novo item
         myAdapter.notifyItemInserted(itens.size()-1);
     }
 }
