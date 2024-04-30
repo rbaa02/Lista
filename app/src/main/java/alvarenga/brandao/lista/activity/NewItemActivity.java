@@ -3,6 +3,7 @@ package alvarenga.brandao.lista.activity;
 import androidx.activity.result.ActivityResult;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,17 +17,30 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import alvarenga.brandao.lista.R;
+import alvarenga.brandao.lista.model.MainActivityViewModel;
+import alvarenga.brandao.lista.model.MyItem;
+import alvarenga.brandao.lista.model.NewItemActivityViewModel;
 
 public class NewItemActivity extends AppCompatActivity {
     // id da chamada
     static int PHOTO_PICKER_REQUEST = 1;
 
-    // foto selecionada
-    Uri photoSelected = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_item);
+
+        // Obtem dados do view model e guarda
+        NewItemActivityViewModel vm = new ViewModelProvider(this).get(NewItemActivityViewModel.class);
+
+        // pega a foto do VM
+        Uri selectedPhotoLoc = vm.getSelectPhotoLoc();
+        // verifica se selecionou uma foto
+        if(selectedPhotoLoc != null){
+            // procura e seta a imagem
+            ImageView imvfotoPreview = findViewById(R.id.imvfotoPreview);
+            imvfotoPreview.setImageURI(selectedPhotoLoc);
+        }
 
         // Procurar botao pelo ID
         ImageButton imgCI = findViewById(R.id.imbCl);
@@ -49,12 +63,6 @@ public class NewItemActivity extends AppCompatActivity {
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Verifica se selecionou uma imagem
-                if (photoSelected == null) {
-                    Toast.makeText(NewItemActivity.this, "É necessário selecionar uma imagem!", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
                 // Procura o texto pelo ID e pega o texto
                 EditText etTitle = findViewById(R.id.etTitle);
                 String title = etTitle.getText().toString();
@@ -76,7 +84,7 @@ public class NewItemActivity extends AppCompatActivity {
                 // Cria a intent
                 Intent i = new Intent();
                 // Seta as datas e os Extra
-                i.setData(photoSelected);
+//                i.setData(photoSelected);
                 i.putExtra("title", title);
                 i.putExtra("description", description);
                 setResult(Activity.RESULT_OK, i);
@@ -96,10 +104,13 @@ public class NewItemActivity extends AppCompatActivity {
         if (resultCode != Activity.RESULT_OK) return;
 
         // pega a foto do DATA
-        photoSelected = data.getData();
+        Uri photoSelected = data.getData();
         // pega o imv pelo id
         ImageView imvPhotoPreview = findViewById(R.id.imvfotoPreview);
         // seta a foto no imageView
         imvPhotoPreview.setImageURI(photoSelected);
+
+        NewItemActivityViewModel vm = new ViewModelProvider(this).get(NewItemActivityViewModel.class);
+        vm.setSelectPhotoLoc(photoSelected);
     }
 }
