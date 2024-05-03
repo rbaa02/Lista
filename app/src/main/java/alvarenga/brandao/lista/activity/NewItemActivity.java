@@ -63,6 +63,9 @@ public class NewItemActivity extends AppCompatActivity {
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Uri selectedPhotoLoc = vm.getSelectPhotoLoc();
+
                 // Procura o texto pelo ID e pega o texto
                 EditText etTitle = findViewById(R.id.etTitle);
                 String title = etTitle.getText().toString();
@@ -84,7 +87,7 @@ public class NewItemActivity extends AppCompatActivity {
                 // Cria a intent
                 Intent i = new Intent();
                 // Seta as datas e os Extra
-//                i.setData(photoSelected);
+                i.setData(selectedPhotoLoc);
                 i.putExtra("title", title);
                 i.putExtra("description", description);
                 setResult(Activity.RESULT_OK, i);
@@ -104,13 +107,14 @@ public class NewItemActivity extends AppCompatActivity {
         if (resultCode != Activity.RESULT_OK) return;
 
         // pega a foto do DATA
-        Uri photoSelected = data.getData();
+        Uri selectedPhotoLoc = data.getData();
         // pega o imv pelo id
         ImageView imvPhotoPreview = findViewById(R.id.imvfotoPreview);
         // seta a foto no imageView
-        imvPhotoPreview.setImageURI(photoSelected);
+        imvPhotoPreview.setImageURI(selectedPhotoLoc);
 
+        // obtemos o ViewModel e guardamos dentro do ViewModel o endereço URI da imagem escolhida pelo usuário
         NewItemActivityViewModel vm = new ViewModelProvider(this).get(NewItemActivityViewModel.class);
-        vm.setSelectPhotoLoc(photoSelected);
+        vm.setSelectPhotoLoc(selectedPhotoLoc);
     }
 }

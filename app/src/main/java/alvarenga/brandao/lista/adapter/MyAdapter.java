@@ -48,7 +48,7 @@ public class MyAdapter extends RecyclerView.Adapter {
 
         // pegando os elementos pelo id e setando e vinculando ah elementos
         ImageView imvfoto = v.findViewById(R.id.imvPhoto);
-        imvfoto.setImageURI(myitem.photo);
+        imvfoto.setImageBitmap(myitem.photo);
         TextView tvtitle = v.findViewById(R.id.tvTitle);
         tvtitle.setText(myitem.title);
         TextView tvdesc = v.findViewById(R.id.tvDesc);
