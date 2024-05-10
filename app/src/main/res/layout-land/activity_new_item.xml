@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnAddItem"
         app:layout_constraintEnd_toStartOf="@+id/etDesc"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imvfotoPreview"
+        app:layout_constraintTop_toBottomOf="@+id/imvPhotoPreview"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <EditText
@@ -30,7 +30,7 @@
         android:hint="Título"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imvfotoPreview"
+        app:layout_constraintStart_toEndOf="@+id/imvPhotoPreview"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -46,7 +46,7 @@
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/btnAddItem"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imvfotoPreview"
+        app:layout_constraintStart_toEndOf="@+id/imvPhotoPreview"
         app:layout_constraintTop_toBottomOf="@+id/etTitle" />
 
     <Button
@@ -63,7 +63,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imvfotoPreview"
+        android:id="@+id/imvPhotoPreview"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginStart="8dp"

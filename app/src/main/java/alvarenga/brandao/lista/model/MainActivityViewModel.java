@@ -3,16 +3,12 @@ package alvarenga.brandao.lista.model;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import alvarenga.brandao.lista.model.MyItem;
-
+// Guarda os dados referentes a MainActivity
 public class MainActivityViewModel extends ViewModel {
-    // guarda a lista de itens cadastrados
-    List<MyItem> itens = new ArrayList<>();
+    ArrayList<MyItem> itens = new ArrayList<>();
 
-    // obter a lista de itens cadastrados
-    public List<MyItem> getItens() {
+    public ArrayList<MyItem> getItens(){
         return itens;
     }
 }

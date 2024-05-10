@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imvfotoPreview"
+        app:layout_constraintTop_toBottomOf="@+id/imvPhotoPreview"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <EditText
@@ -62,7 +62,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imvfotoPreview"
+        android:id="@+id/imvPhotoPreview"
         android:layout_width="0dp"
         android:layout_height="300dp"
         android:layout_marginStart="8dp"

@@ -27,10 +27,7 @@ import alvarenga.brandao.lista.util.Util;
 
 public class MainActivity extends AppCompatActivity {
 
-    // ID chamada
     static int NEW_ITEM_REQUEST = 1;
-
-    // cria o myAdapter
     MyAdapter myAdapter;
 
     @Override
@@ -38,70 +35,79 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // pega o floating button pelo id
+        // Obtem botao flutuante
         FloatingActionButton fabAddItem = findViewById(R.id.fabAddNewItem);
-        //adiciona um ouvidor de clicks
         fabAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // cria um intent para a NewItemActivity
                 Intent i = new Intent(MainActivity.this, NewItemActivity.class);
-                // Abre a activity e busca pelo resultado
+
+                // Inicia a outra tela esperando um retorno
                 startActivityForResult(i, NEW_ITEM_REQUEST);
+
             }
         });
 
-        // Pega o Recycler pelo id
+        // Obtem o RecyclerView
         RecyclerView rvItens = findViewById(R.id.rvItens);
-
-        // Obtem dados do view model e guarda
         MainActivityViewModel vm = new ViewModelProvider(this).get(MainActivityViewModel.class);
         List<MyItem> itens = vm.getItens();
 
-        // Cria e seta o myAdapter
-        myAdapter = new MyAdapter(this, itens);
+        // Cria e seta o adapter
+        // Ensina o RecyclerView a construir e preenche a lista
+        myAdapter = new MyAdapter(this,itens);
         rvItens.setAdapter(myAdapter);
-        // Indica que nao existe variacao de tamanho
+
         rvItens.setHasFixedSize(true);
-        // Cria um gerenciador de layout do tipo linear
+
+        // Criando e setando gerenciador do Layout
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        // Setar ele no RecycleView
         rvItens.setLayoutManager(layoutManager);
-        // Criar um decorador para cada item, separando cada um em uma linha
+
+        // Linha que separa os itens
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvItens.getContext(), DividerItemDecoration.VERTICAL);
-        // Adiciona o decorador no recycler view
         rvItens.addItemDecoration(dividerItemDecoration);
     }
 
+    // Metodo chamado quando o resultado é retornado
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // verifica se o ID de request eh igual
-        if (requestCode != NEW_ITEM_REQUEST) return;
-        // verifica se abriu sem erros
-        if (resultCode != Activity.RESULT_OK) return;
 
-        // cria um novo item
-        MyItem myItem = new MyItem();
-        // pega o titulo, descricao e foto do EXTRA e do DATA e adiciona no item
-        myItem.title = data.getStringExtra("title");
-        myItem.description = data.getStringExtra("description");
-        Uri selectedPhotoURI = data.getData();
+        if(requestCode == NEW_ITEM_REQUEST){
+            if(resultCode == Activity.RESULT_OK){
 
-        // Tenta abrir a foto
-        try{
-            // carrega a imagem e a guarda dentro de um Bitmap
-            Bitmap photo = Util.getBitmap(MainActivity.this, selectedPhotoURI, 100, 100);
-            // guarda dentro do myitem
-            myItem.photo = photo;
-        } catch (FileNotFoundException e){
-            // se nao achar a imagem mostra o erro
-            e.printStackTrace();
+                // Guardando os dados do item em MyItem, classe que criamos
+                MyItem myItem = new MyItem();
+                myItem.title = data.getStringExtra("title");
+                myItem.description = data.getStringExtra("description");
+
+                // Pega o endereco da imagem
+                Uri selectedPhotoURI = data.getData();
+
+                // Pega a imagem, a partir do endereco
+                try {
+                    Bitmap photo = Util.getBitmap(MainActivity.this, selectedPhotoURI,100,100);
+                    myItem.photo = photo;
+                }
+
+                // Trata o erro de arquivo não encontrado
+                catch (FileNotFoundException e){
+                    e.printStackTrace();
+                }
+
+                // Guarda as ViewModel
+                MainActivityViewModel vm = new ViewModelProvider(this).get(MainActivityViewModel.class);
+                List<MyItem> itens = vm.getItens();
+
+                // Adicionando na Array de itens
+                itens.add(myItem);
+
+                // Notifica o adapter de que a lista foi alterado
+                myAdapter.notifyItemInserted(itens.size()-1);
+            }
         }
-        // Obtem dados do view model e guarda
-        MainActivityViewModel vm = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        List<MyItem> itens = vm.getItens();
-        // Notifica o adapter para mostrar o novo item
-        myAdapter.notifyItemInserted(itens.size()-1);
+
+
     }
 }
